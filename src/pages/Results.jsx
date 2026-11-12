@@ -1,0 +1,8 @@
+import { Link, Navigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useApp } from '../context/AppContext'
+import ClubCard from '../components/ClubCard'
+
+const statusText = {match:'Khớp',partial:'Một phần',mismatch:'Lệch'}
+export default function Results() { const { results } = useApp(); const [open, setOpen] = useState(null); if (!results) return <Navigate to="/quiz" replace />
+  return <main className="page-shell results-page"><div className="result-heading"><div><p className="eyebrow accent">BẢN ĐỒ ĐỊNH HƯỚNG</p><h1>Những CLB có thể<br/><em>hợp với bạn.</em></h1><p>Điểm phù hợp được tính từ sở thích, mục tiêu, thời gian, chi phí và mức độ cam kết bạn đã chọn.</p></div><Link to="/quiz" className="btn btn-soft">↻ Làm lại trắc nghiệm</Link></div><div className="results-stack">{results.map(match => <section key={match.club.id} className="result-item"><ClubCard club={match.club} match={match}/><button className="detail-toggle" onClick={() => setOpen(open === match.club.id ? null : match.club.id)}>{open === match.club.id ? 'Ẩn giải thích ↑' : 'Xem khớp / lệch ↓'}</button>{open === match.club.id && <div className="match-details">{match.detail.map(row => <div key={row.label} className={`match-detail ${row.status}`}><span className="status-dot">{row.status === 'match' ? '✓' : row.status === 'partial' ? '~' : '×'}</span><div><b>{row.label} · {statusText[row.status]}</b><p>{row.text}</p></div></div>)}</div>}</section>)}</div><div className="page-footer-actions"><Link to="/clubs" className="btn btn-soft">Xem danh mục CLB</Link><Link to="/" className="text-link">Về trang chủ</Link></div></main> }
