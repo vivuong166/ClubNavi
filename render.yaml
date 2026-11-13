@@ -2,6 +2,7 @@ services:
   - type: web
     runtime: node
     name: clb-chon-dung
+    plan: free
     buildCommand: npm ci && npm run build
     startCommand: npm start
     healthCheckPath: /api/health
